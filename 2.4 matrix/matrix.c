@@ -133,9 +133,9 @@ int main() {
         return EXIT_FAILURE;
     }
 	
-	const int M = 5;
-	const int N = 5;
-	const int K = 5;
+	const int M = 2000;
+	const int N = 2000;
+	const int K = 2000;
 	
 	float *A = (float *)malloc(sizeof(float) * M * K);
     float *B = (float *)malloc(sizeof(float) * K * N);
@@ -205,10 +205,10 @@ int main() {
 		return EXIT_FAILURE;
 	}
 	
-	printMatrix(A, M, K, "A");
-	printMatrix(B, K, N, "B");
-	printMatrix(C, M, N, "C (OpenCL)");
-	printMatrix(D, M, N, "D (Sequential");
+	//printMatrix(A, M, K, "A");
+	//printMatrix(B, K, N, "B");
+	//printMatrix(C, M, N, "C (OpenCL)");
+	//printMatrix(D, M, N, "D (Sequential");
 	
     fflush(stdout);
     clReleaseMemObject(bufferA);
