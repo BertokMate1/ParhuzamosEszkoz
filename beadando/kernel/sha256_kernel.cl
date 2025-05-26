@@ -20,9 +20,7 @@ __constant uint k[64] = {
 
 __kernel void sha256_hash(__global const uchar *input,
                          __global uint *digest,
-                         uint length) {
-    if (get_global_id(0) != 0) return;
-
+                         uint num_blocks) {
     uint w[64];
     uint a, b, c, d, e, f, g, h, temp1, temp2;
 
@@ -30,9 +28,6 @@ __kernel void sha256_hash(__global const uchar *input,
         0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
         0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19 
     };
-
-    uint num_blocks = (length + 64) / 64;
-    if (length == 0) num_blocks = 1;
 
     for (uint block = 0; block < num_blocks; block++) {
         // Load message block
@@ -43,16 +38,15 @@ __kernel void sha256_hash(__global const uchar *input,
                    ((uint)input[block*64 + i*4+3]);
         }
 
-        // Extend message schedule
+        // Message schedule
         for (int i = 16; i < 64; i++) {
             w[i] = sigma1(w[i-2]) + w[i-7] + sigma0(w[i-15]) + w[i-16];
         }
 
-        // Initialize working variables
+        // Compression
         a = H[0]; b = H[1]; c = H[2]; d = H[3];
         e = H[4]; f = H[5]; g = H[6]; h = H[7];
 
-        // Compression function
         for (int i = 0; i < 64; i++) {
             temp1 = h + Sigma1(e) + Ch(e, f, g) + k[i] + w[i];
             temp2 = Sigma0(a) + Maj(a, b, c);
@@ -66,12 +60,11 @@ __kernel void sha256_hash(__global const uchar *input,
             a = temp1 + temp2;
         }
 
-        // Update hash values
         H[0] += a; H[1] += b; H[2] += c; H[3] += d;
         H[4] += e; H[5] += f; H[6] += g; H[7] += h;
     }
 
-    // Store final digest
+    // Store digest
     for (int i = 0; i < 8; i++) {
         digest[i] = H[i];
     }
