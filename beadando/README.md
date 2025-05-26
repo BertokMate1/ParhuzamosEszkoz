@@ -6,5 +6,5 @@
     - Gave the program more and more words to handle for clear and visible results.
 
 - **Results:**
-- 
+  
 ![Kernel futási idő diagram](./measurement.png)
