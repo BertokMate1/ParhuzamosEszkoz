@@ -8,7 +8,6 @@
 #include <stdint.h>
 #include <string.h>
 
-// Error checking macro
 #define CHECK_CL_ERROR(err) \
     if (err != CL_SUCCESS) { \
         fprintf(stderr, "OpenCL Error %d at %s:%d\n", err, __FILE__, __LINE__); \
